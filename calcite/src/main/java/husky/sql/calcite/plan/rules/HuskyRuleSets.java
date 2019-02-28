@@ -2,8 +2,10 @@ package husky.sql.calcite.plan.rules;
 
 import husky.sql.calcite.plan.logical.EnumerableToLogicalTableScan;
 import husky.sql.calcite.plan.nodes.logical.converter.*;
+import org.apache.calcite.rel.core.Aggregate;
 import org.apache.calcite.rel.core.RelFactories;
 import org.apache.calcite.rel.rules.SubQueryRemoveRule;
+import org.apache.calcite.sql.validate.GroupByScope;
 import org.apache.calcite.tools.RuleSet;
 import org.apache.calcite.tools.RuleSets;
 
@@ -38,7 +40,6 @@ public class HuskyRuleSets {
             FilterSetOpTransposeRule.INSTANCE,
             // push project through set operation
             ProjectSetOpTransposeRule.INSTANCE,
-
             // aggregation and projection rules
             AggregateProjectMergeRule.INSTANCE,
             AggregateProjectPullUpConstantsRule.INSTANCE,
@@ -95,23 +96,22 @@ public class HuskyRuleSets {
             FilterToCalcRule.INSTANCE,
             ProjectToCalcRule.INSTANCE,
             CalcMergeRule.INSTANCE,
-
+            AggregateValuesRule.INSTANCE,
             // scan optimization
 //            PushProjectIntoTableSourceScanRule.INSTANCE,
 //            PushFilterIntoTableSourceScanRule.INSTANCE,
 
             // unnest rule
 //            LogicalUnnestRule.INSTANCE,
-
 //            translate to husky logical rel nodes
-//            HuskyLogicalAggregate.CONVERTER,
 //            HuskyLogicalWindowAggregate.CONVERTER,
 //            HuskyLogicalOverWindow.CONVERTER,
             HuskyLogicalCalcConverter.INSTANCE,
+            HuskyLogicalAggConverter.INSTANCE,
 //            HuskyLogicalCorrelate.CONVERTER,
 //            HuskyLogicalIntersect.CONVERTER,
 //            HuskyLogicalJoin.CONVERTER,
-//            HuskyLogicalMinus.CONVERTER,
+//           HuskyLogicalMinus.CONVERTER,
 //            HuskyLogicalSort.CONVERTER,
 //            HuskyLogicalUnion.CONVERTER,
 //            HuskyLogicalValues.CONVERTER,
